@@ -27,6 +27,34 @@ import javax.swing.border.MatteBorder;
  */
 public class PalettePane extends JPanel{
     
+    private ColorEditor colorEditor;
+    private Color[] currentColors;
+    private ColorPane[] currentColorPanes;
+
+    public ColorPane[] getCurrentColorPanes() {
+        return currentColorPanes;
+    }
+
+    public void setCurrentColorPanes(ColorPane[] currentColorPanes) {
+        this.currentColorPanes = currentColorPanes;
+    }
+
+    public Color[] getCurrentColors() {
+        return currentColors;
+    }
+
+    public void setCurrentColors(Color[] currentColors) {
+        this.currentColors = currentColors;
+    }
+
+    public ColorEditor getColorEditor() {
+        return colorEditor;
+    }
+
+    public void setColorEditor(ColorEditor colorEditor) {
+        this.colorEditor = colorEditor;
+    }
+    
     public PalettePane(){
         Color[] colors = {};
         setLayout(new GridBagLayout());
@@ -35,7 +63,7 @@ public class PalettePane extends JPanel{
         for (int col = 0; col < colors.length; col++) {
             gbc.gridx = col;
 
-            ColorPane colorPane = new ColorPane(colors[col]);
+            ColorPane colorPane = new ColorPane(colors[col], colorEditor);
             Border border = null;
             if (col < colors.length-1) {
                 border = new MatteBorder(1, 1, 1, 0, Color.GRAY);
@@ -54,12 +82,22 @@ public class PalettePane extends JPanel{
     
    public void setColors(Color[] colors){
         this.removeAll();
+        this.currentColors = colors;
+        this.currentColorPanes = new ColorPane[colors.length];
         GridBagConstraints gbc = new GridBagConstraints();
         for (int col = 0; col < colors.length; col++) {
             gbc.gridx = col;
-            ColorPane colorPane = new ColorPane(colors[col]);
+            ColorPane colorPane = new ColorPane(colors[col],colorEditor);
+            currentColorPanes[col] = colorPane;
             add(colorPane, gbc);
         }
+   }
+   
+   public Color[] getUpdatedColors(){
+       for(int i=0;i<currentColorPanes.length;i++){
+           currentColors[i] = currentColorPanes[i].getCurrentColor();
+       }
+       return currentColors;
    }
    
 }

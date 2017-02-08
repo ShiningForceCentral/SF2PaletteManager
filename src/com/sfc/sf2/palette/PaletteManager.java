@@ -32,35 +32,25 @@ public class PaletteManager {
         System.out.println("com.sfc.sf2.palette.PaletteManager.importDisassembly() - Disassembly imported.");
     }
     
-    public void exportDisassembly(String filePath){
+    public void exportDisassembly(String filePath, Color[] currentColors){
         System.out.println("com.sfc.sf2.palette.PaletteManager.importDisassembly() - Exporting disassembly ...");
-        DisassemblyManager.exportDisassembly(this.palette, filePath);
+        this.palette = currentColors;
+        DisassemblyManager.exportDisassembly(currentColors, filePath);
         System.out.println("com.sfc.sf2.palette.PaletteManager.importDisassembly() - Disassembly exported.");        
     }   
     
-    public void importOriginalRom(String originalRomFilePath){
+    public void importRom(String originalRomFilePath, String offset, String length){
         System.out.println("com.sfc.sf2.palette.PaletteManager.importOriginalRom() - Importing original ROM ...");
-        this.palette = RomManager.importRom(RomManager.ORIGINAL_ROM_TYPE,originalRomFilePath);
+        this.palette = RomManager.importRom(originalRomFilePath, offset, length);
         System.out.println("com.sfc.sf2.palette.PaletteManager.importOriginalRom() - Original ROM imported.");
     }
     
-    public void exportOriginalRom(String originalRomFilePath){
+    public void exportRom(String originalRomFilePath, Color[] currentColors, String offset){
         System.out.println("com.sfc.sf2.palette.PaletteManager.exportOriginalRom() - Exporting original ROM ...");
-        RomManager.exportRom(RomManager.ORIGINAL_ROM_TYPE, this.palette, originalRomFilePath);
+        this.palette = currentColors;
+        RomManager.exportRom(this.palette, originalRomFilePath, offset);
         System.out.println("com.sfc.sf2.palette.PaletteManager.exportOriginalRom() - Original ROM exported.");        
-    }   
-    
-    public void importCaravanRom(String caravanRomFilePath){
-        System.out.println("com.sfc.sf2.palette.PaletteManager.importCaravanRom() - Importing Caravan ROM ...");
-        this.palette = RomManager.importRom(RomManager.CARAVAN_ROM_TYPE,caravanRomFilePath);
-        System.out.println("com.sfc.sf2.palette.PaletteManager.importCaravanRom() - Caravan ROM imported.");
-    }
-    
-    public void exportCaravanRom(String caravanRomFilePath){
-        System.out.println("com.sfc.sf2.palette.PaletteManager.exportCaravanRom() - Exporting original ROM ...");
-        RomManager.exportRom(RomManager.CARAVAN_ROM_TYPE, this.palette, caravanRomFilePath);
-        System.out.println("com.sfc.sf2.palette.PaletteManager.exportCaravanRom() - Caravan ROM exported.");        
-    }    
+    }      
     
     public void loadPalette(byte[] paletteBytes){
         System.out.println("com.sfc.sf2.palette.PaletteManager.loadPalette() - Loading Palette ...");

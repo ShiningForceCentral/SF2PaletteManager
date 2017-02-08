@@ -13,10 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,26 +23,26 @@ import java.util.logging.Logger;
  */
 public class RomManager {
     
-    public static final int ORIGINAL_ROM_TYPE = 0;
-    public static final int CARAVAN_ROM_TYPE = 1;
-    
     private static final int BASE_PALETTE_OFFSET = 0x309E;
     
     private static File romFile;  
     private static byte[] romData;
     
-    public static Color[] importRom(int romType, String romFilePath){
+    public static Color[] importRom(String romFilePath, String offsetString, String lengthString){
         System.out.println("com.sfc.sf2.palette.io.RomManager.importRom() - Importing ROM ...");
         RomManager.openFile(romFilePath);
-        Color[] palette = RomManager.parsePalette(romType);        
+        int offset = Integer.parseInt(offsetString,16);
+        int length = Integer.parseInt(lengthString);
+        Color[] palette = RomManager.parsePalette(offset,length);        
         System.out.println("com.sfc.sf2.palette.io.RomManager.importRom() - ROM imported.");
         return palette;
     }
     
-    public static void exportRom(int romType, Color[] palette, String romFilePath){
+    public static void exportRom(Color[] palette, String romFilePath, String offsetString){
         System.out.println("com.sfc.sf2.palette.io.RomManager.exportRom() - Exporting ROM ...");
         RomManager.producePalette(palette);
-        RomManager.writeFile(romType, romFilePath);
+        int offset = Integer.parseInt(offsetString,16);
+        RomManager.writeFile(romFilePath,offset);
         System.out.println("com.sfc.sf2.palette.io.RomManager.exportRom() - ROM exported.");        
     }    
     
@@ -60,9 +57,9 @@ public class RomManager {
         }
     }
     
-    private static Color[] parsePalette(int romType){
+    private static Color[] parsePalette(int offset, int length){
         System.out.println("com.sfc.sf2.palette.io.RomManager.parsePalette() - Parsing Palette ...");
-        byte[] data = Arrays.copyOfRange(romData,BASE_PALETTE_OFFSET,BASE_PALETTE_OFFSET+0x20);        
+        byte[] data = Arrays.copyOfRange(romData,offset,offset+length);        
         Color[] palette = PaletteDecoder.parsePalette(data);
         System.out.println("com.sfc.sf2.palette.io.RomManager.parsePalette() - Palette parsed.");
         return palette;
@@ -74,14 +71,14 @@ public class RomManager {
         System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.producePalette() - Palette produced.");
     }    
   
-    private static void writeFile(int romType, String romFilePath){
+    private static void writeFile(String romFilePath, int offset){
         try {
             System.out.println("com.sfc.sf2.palette.io.RomManager.writeFile() - Writing file ...");
             romFile = new File(romFilePath);
             Path romPath = Paths.get(romFile.getAbsolutePath());
             romData = Files.readAllBytes(romPath);
             byte[] palette = PaletteEncoder.getNewPaletteFileBytes();
-            System.arraycopy(palette, 0, romData, BASE_PALETTE_OFFSET, 0x20);
+            System.arraycopy(palette, 0, romData, offset, palette.length);
             Files.write(romPath,romData);
             System.out.println(romData.length + " bytes into " + romFilePath);  
             System.out.println("com.sfc.sf2.palette.io.RomManager.writeFile() - File written.");

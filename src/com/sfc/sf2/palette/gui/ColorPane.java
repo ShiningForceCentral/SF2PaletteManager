@@ -19,12 +19,24 @@ import javax.swing.border.MatteBorder;
  */
 public class ColorPane extends JPanel {
 
-    private Color defaultBackground;
-    private Border defaultBorder;
+    private Color currentColor;
 
-    public ColorPane(Color color) {
+    public Color getCurrentColor() {
+        return currentColor;
+    }
+
+    public void setCurrentColor(Color currentColor) {
+        this.currentColor = currentColor;
+    }
+    private Border defaultBorder;
+    private ColorEditor colorEditor;
+    private ColorPane self = this;
+
+    public ColorPane(Color color, ColorEditor ce) {
         
-        defaultBackground = color;
+        colorEditor = ce;
+        
+        currentColor = color;
         setBackground(color);
         defaultBorder = new MatteBorder(1, 1, 1, 1, Color.GRAY);
         setBorder(defaultBorder);
@@ -43,11 +55,21 @@ public class ColorPane extends JPanel {
                 //setBackground(defaultBackground);
                 setBorder(defaultBorder);
             }
+            
+            @Override
+            public void mouseClicked(MouseEvent e){
+                colorEditor.setColorPane(self);
+            }
         });
     }
 
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(30, 30);
+    }
+    
+    public void updateColor(Color c){
+        this.currentColor = c;
+        setBackground(this.currentColor);
     }
 }    
