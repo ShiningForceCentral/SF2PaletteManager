@@ -1,8 +1,6 @@
 *.bak
-nbproject/*
+nbproject/private/*
 build/*
-build.xml
-manifest.mf
 /dist/
 
 *.class
