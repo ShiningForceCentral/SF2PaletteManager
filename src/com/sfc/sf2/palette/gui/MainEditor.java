@@ -198,7 +198,7 @@ public class MainEditor extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("<html>Select a 2MB US ROM in BIN format (not SMD !)</html>");
+        jLabel4.setText("<html>Select a ROM in BIN format (not SMD !)</html>");
 
         jTextField20.setText("309E");
         jTextField20.addActionListener(new java.awt.event.ActionListener() {
