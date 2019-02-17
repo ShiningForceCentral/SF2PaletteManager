@@ -8,6 +8,9 @@ package com.sfc.sf2.palette.gui;
 import com.sfc.sf2.palette.PaletteManager;
 import java.io.File;
 import java.io.PrintStream;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
 
@@ -23,13 +26,17 @@ public class MainEditor extends javax.swing.JFrame {
      * Creates new form NewApplication
      */
     public MainEditor() {
-        initComponents();
-        initConsole(jTextArea1);
-        File workingDirectory = new File(MainEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        System.setProperty("user.dir", workingDirectory.getParent());
-        jFileChooser1.setCurrentDirectory(workingDirectory);
-        jFileChooser2.setCurrentDirectory(workingDirectory);  
-        palettePane1.setColorEditor(colorEditor2);
+        try {
+            initComponents();
+            initConsole(jTextArea1);
+            File workingDirectory = new File(MainEditor.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
+            System.setProperty("user.dir", workingDirectory.toString());
+            jFileChooser1.setCurrentDirectory(workingDirectory);
+            jFileChooser2.setCurrentDirectory(workingDirectory);
+            palettePane1.setColorEditor(colorEditor2);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(MainEditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -116,7 +123,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel8.setText("BIN file :");
 
-        jTextField8.setText(".\\displayinitpalette.bin");
+        jTextField8.setText(".\\tech\\basepalette.bin");
         jTextField8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField8ActionPerformed(evt);
@@ -294,7 +301,7 @@ public class MainEditor extends javax.swing.JFrame {
 
         jLabel12.setText("BIN file :");
 
-        jTextField12.setText(".\\displayinitpalette.bin");
+        jTextField12.setText(".\\tech\\basepalette.bin");
         jTextField12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField12ActionPerformed(evt);
