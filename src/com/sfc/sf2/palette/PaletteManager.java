@@ -7,6 +7,8 @@ package com.sfc.sf2.palette;
 
 import com.sfc.sf2.palette.graphics.PaletteDecoder;
 import com.sfc.sf2.palette.io.DisassemblyManager;
+import com.sfc.sf2.palette.io.GifManager;
+import com.sfc.sf2.palette.io.PngManager;
 import com.sfc.sf2.palette.io.RomManager;
 import java.awt.Color;
 
@@ -50,6 +52,32 @@ public class PaletteManager {
         this.palette = currentColors;
         RomManager.exportRom(this.palette, originalRomFilePath, offset);
         System.out.println("com.sfc.sf2.palette.PaletteManager.exportOriginalRom() - Original ROM exported.");        
+    }    
+    
+    public void importPng(String filepath){
+        System.out.println("com.sfc.sf2.palette.PaletteManager.importPng() - Importing PNG ...");
+        this.palette = PngManager.importPng(filepath);
+        System.out.println("com.sfc.sf2.palette.PaletteManager.importPng() - PNG imported.");
+    }
+    
+    public void exportPng(String filepath, Color[] currentColors, int width, int height){
+        System.out.println("com.sfc.sf2.palette.PaletteManager.exportPng() - Exporting PNG ...");
+        this.palette = currentColors;
+        PngManager.exportPng(this.palette, filepath, width, height);
+        System.out.println("com.sfc.sf2.palette.PaletteManager.exportPng() - PNG exported.");        
+    }    
+    
+    public void importGif(String filepath){
+        System.out.println("com.sfc.sf2.palette.PaletteManager.importGif() - Importing GIF ...");
+        this.palette = GifManager.importGif(filepath);
+        System.out.println("com.sfc.sf2.palette.PaletteManager.importGif() - GIF imported.");
+    }
+    
+    public void exportGif(String filepath, Color[] currentColors, int width, int height){
+        System.out.println("com.sfc.sf2.palette.PaletteManager.exportGif() - Exporting GIF ...");
+        this.palette = currentColors;
+        GifManager.exportGif(this.palette, filepath, width, height);
+        System.out.println("com.sfc.sf2.palette.PaletteManager.exportGif() - GIF exported.");        
     }      
     
     public void loadPalette(byte[] paletteBytes){
