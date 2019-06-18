@@ -29,9 +29,9 @@ public class ColorEditor extends JPanel {
   ColorPane colorPane;
 
   public ColorEditor() {
-    sliderR = getSlider(0, 15, 0, 5, 1);
-    sliderG = getSlider(0, 15, 0, 5, 1);
-    sliderB = getSlider(0, 15, 0, 5, 1);
+    sliderR = getSlider(0, 14, 0, 2, 2);
+    sliderG = getSlider(0, 14, 0, 2, 2);
+    sliderB = getSlider(0, 14, 0, 2, 2);
 
     add(canvas);
     
@@ -65,6 +65,7 @@ public class ColorEditor extends JPanel {
     slider.setMajorTickSpacing(mjrTkSp);
     slider.setMinorTickSpacing(mnrTkSp);
     slider.setPaintLabels(true);
+    slider.setSnapToTicks(true);
     slider.addChangeListener(new SliderListener());
     return slider;
   }

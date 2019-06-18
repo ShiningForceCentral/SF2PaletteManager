@@ -7,12 +7,17 @@ package com.sfc.sf2.palette.graphics;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author wiz
  */
 public class PaletteEncoder {
+    
+    
+    public static final int[] VALUE_ARRAY = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14};
     
     private static byte[] newPaletteBytes;
     
@@ -24,9 +29,9 @@ public class PaletteEncoder {
             byte first = 0x00;
             byte second = 0x00;
             Color color = palette[i];
-            int b = color.getBlue() / 16;
-            int g = color.getGreen() / 16;
-            int r = color.getRed() / 16;
+            int b = VALUE_ARRAY[color.getBlue()];
+            int g = VALUE_ARRAY[color.getGreen()];
+            int r = VALUE_ARRAY[color.getRed()];
             first = (byte)b;
             second = (byte)(((g*16)&0xF0) | (r&0x0F));
             paletteBytes[i*2] = first;
