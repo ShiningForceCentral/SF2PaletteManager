@@ -21,9 +21,11 @@ public class PaletteEncoder {
     
     private static byte[] newPaletteBytes;
     
-    public static void producePalette(Color[] palette){
+    public static Color[] producePalette(Color[] palette){
 
         byte[] paletteBytes = new byte[palette.length*2];
+        
+        Color[] standardizedPalette = new Color[palette.length];
         
         for(int i=0;i<palette.length;i++){
             byte first = 0x00;
@@ -32,6 +34,7 @@ public class PaletteEncoder {
             int b = VALUE_ARRAY[color.getBlue()];
             int g = VALUE_ARRAY[color.getGreen()];
             int r = VALUE_ARRAY[color.getRed()];
+            standardizedPalette[i] = new Color(r,g,b);
             first = (byte)b;
             second = (byte)(((g*16)&0xF0) | (r&0x0F));
             paletteBytes[i*2] = first;
@@ -39,6 +42,8 @@ public class PaletteEncoder {
         }
         
         newPaletteBytes = paletteBytes;
+        
+        return standardizedPalette;
     }
     
     public static byte[] getNewPaletteFileBytes(){
