@@ -21,7 +21,7 @@ public class PaletteEncoder {
     
     private static byte[] newPaletteBytes;
     
-    public static Color[] producePalette(Color[] palette){
+    public static byte[] producePalette(Color[] palette){
 
         byte[] paletteBytes = new byte[palette.length*2];
         
@@ -43,7 +43,7 @@ public class PaletteEncoder {
         
         newPaletteBytes = paletteBytes;
         
-        return standardizedPalette;
+        return paletteBytes;
     }
     
     public static byte[] getNewPaletteFileBytes(){
