@@ -30,7 +30,7 @@ public class PaletteDecoder {
     
     public static Color[] parsePalette(byte[] data){
         Color[] colors = new Color[data.length/2];
-        
+        int a = 0;
         for(int i=0;i*2<data.length;i++){
             if(i*2+1<data.length){
                 byte first = data[i*2];
@@ -41,8 +41,11 @@ public class PaletteDecoder {
                 r = VALUE_MAP.get(r&0xE);
                 g = VALUE_MAP.get(g&0xE);
                 b = VALUE_MAP.get(b&0xE);
-                Color color = new Color(r,g,b);
+                Color color = new Color(r,g,b,a);
                 colors[i] = color;
+            }
+            if(i==0){
+                a=255;
             }
         }
         
