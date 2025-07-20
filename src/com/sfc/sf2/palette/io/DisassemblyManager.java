@@ -5,9 +5,9 @@
  */
 package com.sfc.sf2.palette.io;
 
+import com.sfc.sf2.palette.Palette;
 import com.sfc.sf2.palette.graphics.PaletteDecoder;
 import com.sfc.sf2.palette.graphics.PaletteEncoder;
-import java.awt.Color;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,29 +20,30 @@ import java.util.logging.Logger;
  * @author wiz
  */
 public class DisassemblyManager {
-    
-    
-    public static Color[] importDisassembly(String filePath){
+        
+    public static Palette importDisassembly(String filePath) {
         System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.importDisassembly() - Importing disassembly ...");
-        Color[] palette = DisassemblyManager.parsePalette(filePath);        
+        Palette palette = DisassemblyManager.parsePalette(filePath);
         System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.importDisassembly() - Disassembly imported.");
         return palette;
     }
     
-    public static void exportDisassembly(Color[] palette, String filePath){
+    public static void exportDisassembly(Palette palette, String filePath){
         System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.exportDisassembly() - Exporting disassembly ...");
         DisassemblyManager.producePalette(palette);
         DisassemblyManager.writeFiles(filePath);
         System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.exportDisassembly() - Disassembly exported.");        
     }    
     
-    private static Color[] parsePalette(String filePath){
+    private static Palette parsePalette(String filePath){
         System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.parseTextbank() - Parsing Palette ...");
-        Color[] palette = null;       
+        Palette palette = null;       
         try{
             Path path = Paths.get(filePath);
             byte[] data = Files.readAllBytes(path);
-            palette = PaletteDecoder.parsePalette(data);
+            String filename = path.getFileName().toString();
+            filename = filename.substring(0, filename.lastIndexOf("."));
+            palette = new Palette(filename, PaletteDecoder.parsePalette(data));
         }catch(Exception e){
              System.err.println("com.sfc.sf2.palette.io.DisassemblyManager.parseTextbank() - Error while parsing Palette data : "+e);
         } 
@@ -50,13 +51,13 @@ public class DisassemblyManager {
         return palette;
     }
 
-    private static void producePalette(Color[] palette) {
+    private static void producePalette(Palette palette) {
         System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.produceTextbanks() - Producing palette ...");
-        PaletteEncoder.producePalette(palette);
+        PaletteEncoder.producePalette(palette.getColors());
         System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.produceTextbanks() - Palette produced.");
     }    
   
-    private static void writeFiles(String filePath){
+    private static void writeFiles(String filePath) {
         try {
             System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.writeFiles() - Writing file ...");
             Path paletteFilePath = Paths.get(filePath);
@@ -67,7 +68,5 @@ public class DisassemblyManager {
         } catch (IOException ex) {
             Logger.getLogger(DisassemblyManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
-
-    
+    }
 }

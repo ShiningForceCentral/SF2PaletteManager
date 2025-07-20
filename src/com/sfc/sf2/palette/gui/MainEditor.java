@@ -848,7 +848,7 @@ public class MainEditor extends javax.swing.JFrame {
 
     private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
         paletteManager.importRom(jTextField16.getText(),jTextField20.getText(),jTextField21.getText());
-        palettePane1.setColors(paletteManager.getPalette());
+        palettePane1.setPalette(paletteManager.getPalette());
         jPanel1.revalidate();
     }//GEN-LAST:event_jButton23ActionPerformed
 
@@ -866,7 +866,7 @@ public class MainEditor extends javax.swing.JFrame {
 
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
         paletteManager.importDisassembly(jTextField8.getText());
-        palettePane1.setColors(paletteManager.getPalette());
+        palettePane1.setPalette(paletteManager.getPalette());
         jPanel1.revalidate();
     }//GEN-LAST:event_jButton18ActionPerformed
 
@@ -908,7 +908,7 @@ public class MainEditor extends javax.swing.JFrame {
 
     private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
         paletteManager.importPng(jTextField9.getText());
-        palettePane1.setColors(paletteManager.getPalette());
+        palettePane1.setPalette(paletteManager.getPalette());
         jPanel1.revalidate();
     }//GEN-LAST:event_jButton20ActionPerformed
 
@@ -926,7 +926,7 @@ public class MainEditor extends javax.swing.JFrame {
 
     private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
         paletteManager.importGif(jTextField10.getText());
-        palettePane1.setColors(paletteManager.getPalette());
+        palettePane1.setPalette(paletteManager.getPalette());
         jPanel1.revalidate();
     }//GEN-LAST:event_jButton21ActionPerformed
 

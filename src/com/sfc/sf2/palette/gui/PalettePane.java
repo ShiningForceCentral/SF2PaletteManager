@@ -5,18 +5,10 @@
  */
 package com.sfc.sf2.palette.gui;
 
+import com.sfc.sf2.palette.Palette;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
@@ -25,35 +17,16 @@ import javax.swing.border.MatteBorder;
  *
  * @author wiz
  */
-public class PalettePane extends JPanel{
+public class PalettePane extends JPanel {
     
     private ColorEditor colorEditor;
-    private Color[] currentColors;
+    private Palette palette;
     private ColorPane[] currentColorPanes;
-
-    public ColorPane[] getCurrentColorPanes() {
-        return currentColorPanes;
-    }
-
-    public void setCurrentColorPanes(ColorPane[] currentColorPanes) {
-        this.currentColorPanes = currentColorPanes;
-    }
-
-    public Color[] getCurrentColors() {
-        return currentColors;
-    }
-
-    public void setCurrentColors(Color[] currentColors) {
-        this.currentColors = currentColors;
-    }
-
-    public ColorEditor getColorEditor() {
-        return colorEditor;
-    }
-
-    public void setColorEditor(ColorEditor colorEditor) {
-        this.colorEditor = colorEditor;
-    }
+    
+    public PalettePane(Palette palette) {
+        setLayout(new GridBagLayout());
+        setPalette(palette);
+   }
     
     public PalettePane(){
         Color[] colors = {};
@@ -74,15 +47,31 @@ public class PalettePane extends JPanel{
             add(colorPane, gbc);
         }
     }
+
+    public ColorPane[] getCurrentColorPanes() {
+        return currentColorPanes;
+    }
+
+    public void setCurrentColorPanes(ColorPane[] currentColorPanes) {
+        this.currentColorPanes = currentColorPanes;
+    }
+
+    public ColorEditor getColorEditor() {
+        return colorEditor;
+    }
+
+    public void setColorEditor(ColorEditor colorEditor) {
+        this.colorEditor = colorEditor;
+    }
+
+    public Palette getPalette() {
+        return palette;
+    }
     
-    public PalettePane(Color[] colors) {
-        setLayout(new GridBagLayout());
-        setColors(colors);
-   }
-    
-   public void setColors(Color[] colors){
+   public void setPalette(Palette palette) {
         this.removeAll();
-        this.currentColors = colors;
+        this.palette = palette;
+        Color[] colors = palette.getColors();
         this.currentColorPanes = new ColorPane[colors.length];
         GridBagConstraints gbc = new GridBagConstraints();
         for (int col = 0; col < colors.length; col++) {
@@ -93,11 +82,11 @@ public class PalettePane extends JPanel{
         }
    }
    
-   public Color[] getUpdatedColors(){
+   public Palette getUpdatedColors() {
+       Color[] colors = palette.getColors();
        for(int i=0;i<currentColorPanes.length;i++){
-           currentColors[i] = currentColorPanes[i].getCurrentColor();
+           colors[i] = currentColorPanes[i].getCurrentColor();
        }
-       return currentColors;
+       return palette;
    }
-   
 }
