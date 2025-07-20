@@ -56,20 +56,6 @@ public class Palette {
         return Palette.buildICM(colors);
     }
     
-    public static Palette combinePalettes(Palette basePalette, Palette replace, int startIndex, int endIndex) {
-        Color[] baseColors = basePalette.getColors();
-        Color[] replaceColors = replace.getColors();
-        Color[] newColors = new Color[baseColors.length];
-        for (int i = 0; i < newColors.length; i++) {
-            if (i >= startIndex && i < endIndex) {
-                newColors[i] = replaceColors[i];
-            } else {
-                newColors[i] = baseColors[i];
-            }
-        }
-        return new Palette(newColors);
-    }
-    
     public static Color[] fromICM(IndexColorModel icm){
         Color[] colors = new Color[16];
         if(icm.getMapSize()>16){
