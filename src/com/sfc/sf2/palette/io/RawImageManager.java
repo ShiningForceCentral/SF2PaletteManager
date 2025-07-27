@@ -46,7 +46,7 @@ public class RawImageManager {
     public static void exportImage(Palette palette, String filepath, int width, int height, boolean isPng) {
         try {
             LOG.entering(LOG.getName(),"exportImage");
-            IndexColorModel icm = palette.buildICM();
+            IndexColorModel icm = palette.getIcm();
             BufferedImage image = new BufferedImage(width, height , BufferedImage.TYPE_BYTE_BINARY, icm);
             File outputfile = new File(filepath);
             LOG.fine("File path : "+outputfile.getAbsolutePath());
