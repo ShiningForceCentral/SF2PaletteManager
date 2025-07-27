@@ -17,19 +17,21 @@ public class Palette {
     private String name;
     private Color[] colors;
     
+    private IndexColorModel icm;
+    
     public Palette() {
         this.name = "New Palette";
         this.colors = null;
     }
     
     public Palette(Color[] colors) {
-        this.name = "New Palette";
-        this.colors = colors;
+        setName("New Palette");
+        setColors(colors);
     }
     
     public Palette(String name, Color[] colors) {
-        this.name = name;
-        this.colors = colors;
+        setName(name);
+        setColors(colors);
     }
 
     public String getName() {
@@ -46,14 +48,15 @@ public class Palette {
 
     public void setColors(Color[] palette) {
         this.colors = palette;
+        icm = buildICM(colors);
     }
     
     public int getColorsCount() {
         return colors.length;
     }
-    
-    public IndexColorModel buildICM() {
-        return Palette.buildICM(colors);
+
+    public IndexColorModel getIcm() {
+        return icm;
     }
     
     public static Color[] fromICM(IndexColorModel icm){
