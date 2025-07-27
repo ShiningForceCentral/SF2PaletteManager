@@ -48,6 +48,7 @@ public class Palette {
 
     public void setColors(Color[] palette) {
         this.colors = palette;
+        ensureUniqueTransparencyColor();
         icm = buildICM(colors);
     }
     
@@ -59,6 +60,25 @@ public class Palette {
         return icm;
     }
     
+    /*
+        Managing edge case of transparent {@code Color} being identical to an opaque {@code Color} in the palette,
+        preventing image rendering to use opaque color where needed.
+        In such case, now applying standard magenta as transparency color.
+    */
+    private void ensureUniqueTransparencyColor(){
+        for(int i=1;i<colors.length;i++){
+            if(colors[0].getRed()==colors[i].getRed()
+                    && colors[0].getGreen()==colors[i].getGreen()
+                    && colors[0].getBlue()==colors[i].getBlue()
+                    ){
+                colors[0] = new Color(0xFF00FF, true);
+            }
+        }
+    }
+    
+    /*
+        Gets {@code Color} array from an existing {@code Index Color Model}
+    */
     public static Color[] fromICM(IndexColorModel icm){
         Color[] colors = new Color[16];
         if(icm.getMapSize()>16){
@@ -76,6 +96,9 @@ public class Palette {
         return colors;
     }
     
+    /*
+        Creates new {@code Index Color Model} from {@code Color} array
+    */
     public static IndexColorModel buildICM(Color[] colors) {
         byte[] reds = new byte[16];
         byte[] greens = new byte[16];
