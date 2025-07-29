@@ -19,41 +19,29 @@ import javax.swing.border.MatteBorder;
  */
 public class ColorPane extends JPanel {
 
+    private static final Border DEFAULT_BORDER = new MatteBorder(1, 1, 1, 1, Color.GRAY);
+    private static final Border HOVER_BORDER = new MatteBorder(2, 2, 2, 2, Color.DARK_GRAY);
+    
     private Color currentColor;
-
-    public Color getCurrentColor() {
-        return currentColor;
-    }
-
-    public void setCurrentColor(Color currentColor) {
-        this.currentColor = currentColor;
-    }
-    private Border defaultBorder;
     private ColorEditor colorEditor;
     private ColorPane self = this;
 
     public ColorPane(Color color, ColorEditor ce) {
         
         colorEditor = ce;
-        
-        currentColor = color;
-        setBackground(color);
-        defaultBorder = new MatteBorder(1, 1, 1, 1, Color.GRAY);
-        setBorder(defaultBorder);
+        updateColor(color);
+        setBackground(currentColor);
+        setBorder(DEFAULT_BORDER);
         
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                //defaultBackground = getBackground();
-                //setBackground(Color.BLUE);
-                Border border = new MatteBorder(2, 2, 2, 2, Color.DARK_GRAY);
-                setBorder(border);
+                setBorder(HOVER_BORDER);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                //setBackground(defaultBackground);
-                setBorder(defaultBorder);
+                setBorder(DEFAULT_BORDER);
             }
             
             @Override
@@ -67,9 +55,15 @@ public class ColorPane extends JPanel {
     public Dimension getPreferredSize() {
         return new Dimension(30, 30);
     }
+
+    public Color getCurrentColor() {
+        return currentColor;
+    }
     
     public void updateColor(Color c){
-        this.currentColor = c;
+        currentColor = c;
+        if (c.getAlpha() == 0)
+            currentColor = new Color(c.getRed(),c.getGreen(),c.getBlue(),255);
         setBackground(this.currentColor);
     }
 }    
