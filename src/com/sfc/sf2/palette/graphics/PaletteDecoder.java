@@ -32,9 +32,9 @@ public class PaletteDecoder {
         return parsePalette(data,false);
     }
     
-    public static Color[] parsePalette(byte[] data, boolean firstPixelTransparent){
+    public static Color[] parsePalette(byte[] data, boolean firstColorTransparent){
         Color[] colors = new Color[data.length/2];
-        int a = firstPixelTransparent?0:255;
+        int a = firstColorTransparent?0:255;
         for(int i=0;i*2<data.length;i++){
             if(i*2+1<data.length){
                 byte first = data[i*2];

@@ -26,12 +26,17 @@ public class Palette {
     
     public Palette(Color[] colors) {
         setName("New Palette");
-        setColors(colors);
+        setColors(colors, true);
     }
     
     public Palette(String name, Color[] colors) {
         setName(name);
-        setColors(colors);
+        setColors(colors, true);
+    }
+    
+    public Palette(String name, Color[] colors, boolean firstColorTransparent) {
+        setName(name);
+        setColors(colors, firstColorTransparent);
     }
 
     public String getName() {
@@ -46,10 +51,12 @@ public class Palette {
         return colors;
     }
 
-    public void setColors(Color[] palette) {
+    public void setColors(Color[] palette, boolean firstColorTransparent) {
         this.colors = palette;
-        ensureUniqueTransparencyColor();
-        icm = buildICM(colors);
+        if (firstColorTransparent) {
+            ensureUniqueTransparencyColor();
+        }
+        icm = buildICM(colors, firstColorTransparent);
     }
     
     public int getColorsCount() {
@@ -100,6 +107,13 @@ public class Palette {
         Creates new {@code Index Color Model} from {@code Color} array
     */
     public static IndexColorModel buildICM(Color[] colors) {
+        return buildICM(colors, true);
+    }
+    
+    /*
+        Creates new {@code Index Color Model} from {@code Color} array
+    */
+    public static IndexColorModel buildICM(Color[] colors, boolean firstColorTransparent) {
         byte[] reds = new byte[16];
         byte[] greens = new byte[16];
         byte[] blues = new byte[16];
@@ -107,7 +121,7 @@ public class Palette {
         reds[0] = (byte)0xFF;
         greens[0] = (byte)0xFF;
         blues[0] = (byte)0xFF;
-        alphas[0] = 0;
+        alphas[0] = firstColorTransparent ? 0 : (byte)0xFF;
         for(int i=1; i<16; i++) {
             reds[i] = (byte)colors[i].getRed();
             greens[i] = (byte)colors[i].getGreen();

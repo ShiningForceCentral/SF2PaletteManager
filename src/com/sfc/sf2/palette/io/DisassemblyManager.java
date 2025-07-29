@@ -20,11 +20,31 @@ import java.util.logging.Logger;
  * @author wiz
  */
 public class DisassemblyManager {
-        
+    
     public static Palette importDisassembly(String filePath) {
+        return importDisassembly(filePath, true);
+    }
+    
+    public static Palette importDisassembly(String filePath, boolean firstColorTransparent) {
         System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.importDisassembly() - Importing disassembly ...");
-        Palette palette = DisassemblyManager.parsePalette(filePath);
+        Palette palette = DisassemblyManager.parsePalette(filePath, firstColorTransparent);
         System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.importDisassembly() - Disassembly imported.");
+        return palette;
+    }
+    
+    private static Palette parsePalette(String filePath, boolean firstColorTransparent) {
+        System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.parsePalette() - Parsing Palette ...");
+        Palette palette = null;       
+        try {
+            Path path = Paths.get(filePath);
+            byte[] data = Files.readAllBytes(path);
+            String filename = path.getFileName().toString();
+            filename = filename.substring(0, filename.lastIndexOf("."));
+            palette = new Palette(filename, PaletteDecoder.parsePalette(data, firstColorTransparent), firstColorTransparent);
+        } catch (Exception e) {
+             System.err.println("com.sfc.sf2.palette.io.DisassemblyManager.parsePalette() - Error while parsing Palette data : "+e);
+        } 
+        System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.parsePalette() - Palette parsed.");
         return palette;
     }
     
@@ -33,28 +53,12 @@ public class DisassemblyManager {
         DisassemblyManager.producePalette(palette);
         DisassemblyManager.writeFiles(filePath);
         System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.exportDisassembly() - Disassembly exported.");        
-    }    
-    
-    private static Palette parsePalette(String filePath){
-        System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.parseTextbank() - Parsing Palette ...");
-        Palette palette = null;       
-        try{
-            Path path = Paths.get(filePath);
-            byte[] data = Files.readAllBytes(path);
-            String filename = path.getFileName().toString();
-            filename = filename.substring(0, filename.lastIndexOf("."));
-            palette = new Palette(filename, PaletteDecoder.parsePalette(data));
-        }catch(Exception e){
-             System.err.println("com.sfc.sf2.palette.io.DisassemblyManager.parseTextbank() - Error while parsing Palette data : "+e);
-        } 
-        System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.parseTextbank() - Palette parsed.");
-        return palette;
-    }
+    }   
 
     private static void producePalette(Palette palette) {
-        System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.produceTextbanks() - Producing palette ...");
+        System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.producePalette() - Producing palette ...");
         PaletteEncoder.producePalette(palette.getColors());
-        System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.produceTextbanks() - Palette produced.");
+        System.out.println("com.sfc.sf2.palette.io.DisassemblyManager.producePalette() - Palette produced.");
     }    
   
     private static void writeFiles(String filePath) {
